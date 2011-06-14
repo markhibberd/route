@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Specification-Title: io.mth.dispatch
+Specification-Version: VERSION
+Specification-Vendor: io.mth
+Implementation-Title: io.mth.dispatch
+Implementation-Version: VERSION
+Implementation-Vendor: io.mth
+

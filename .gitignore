@@ -1,0 +1,6 @@
+gen
+*.iws
+out
+.ensime.out
+.idea/workspace.xml
+.idea/ant.xml

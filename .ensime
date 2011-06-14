@@ -1,0 +1,17 @@
+(
+
+:project-name "route"
+
+:project-package "io.mth.route"
+
+:sources ("./src/prod" "./src/test")
+
+:compile-jars ("./lib/compile" "./lib/run" "./lib/test")
+
+:runtime-jars ("./lib/run" "./lib/test")
+
+:class-dirs ("./.ensime.out")
+
+:target "./.ensime.out"
+
+)

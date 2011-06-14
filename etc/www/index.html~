@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>task.mth.io</title>
+   <meta name="author" content="Mark Hibberd" />
+   <link rel="stylesheet" href="http://mth.io/css/reset.css" type="text/css" />
+   <link rel="stylesheet" href="http://mth.io/css/text.css" type="text/css" />
+<link href="http://fonts.googleapis.com/css?family=Droid+Sans:regular,italic,bold,bolditalic" media="screen" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Droid+Sans+Mono" media="screen" rel="stylesheet" type="text/css">
+   <link rel="stylesheet" href="http://mth.io/css/site.css" type="text/css" />
+   <style media="screen" type="text/css">
+     h1 {
+        font-size: 3em;
+     }
+     h2 {
+        font-size: 2em;
+     }
+    
+   </style>
+</head>
+<body>
+
+<div class="site" id="site">
+  <div class="title" id="header">
+    <span id="headertight"><a href="/"><span class="main">task</span> @ <span class="main">mth</span> <span class="alt">i/o</span></a></span>
+  </div>
+
+  <div id="outerguts">
+  <div id="guts">
+    <h1>task</h1>
+
+      <div onclick='document.location="/release/0.5/task-0.5.tar.gz"; return false;' class="linked"
+           style="-moz-border-radius: 15px;
+                  -webkit-border-bottom: 15px;
+                   padding: 25px;
+                   margin: 30px;
+                   border: 4px solid #000;
+                   background: #2C77C1;
+                   color: #fff;
+                   font-size: 3em;
+                   float: right;
+                    ">
+          Version 0.5
+      </div>
+
+    <p>
+        Task is a simple management cli for tracking tasks.
+    </p>
+
+    <p>
+        This interface wraps a file using the simplest possible format
+        where each task is represented as a single line of text in
+        the file.
+    </p>
+
+    <p>
+        Each task has an id of its line number in the file.
+    </p>
+
+    <p>
+        Task ids are ephemeral, so as tasks are completed, added or
+        prioritised the id will change. The id is primarily for interactive
+        use.
+    </p>
+
+    <h2>quick start</h2>
+
+    <p>
+      Here are the basic operation you can perform with task. These examples use long form commands,
+      however you can replace any long form command with its first letter, i.e. l is equivalent to list,
+      n is equivalent to new:
+    </p>
+
+    <p>
+    specify a custom task file:
+    </p>
+    <pre>
+    $ TASK_FILE=~/.task task
+    </pre>
+    <p>
+    list all tasks:
+    </p>
+    <pre>
+    $ task
+    </pre>
+
+    <p>
+      search in list of tasks:
+    </p>
+    <pre>
+    $ task list searchterm
+    </pre>
+
+    <p>complete task at top of stack:</p>
+    <pre>
+    $ task mark
+    </pre>
+
+    <p>complete a specific task:</p>
+    <pre>
+    $ task mark 2
+    </pre>
+
+    <p>create task:</p>
+    <pre>
+    $ task new This is an item in my task list.
+    </pre>
+
+    <p>order tasks in editor:</p>
+    <pre>
+    $ task order
+    </pre>
+
+    <p>order tasks in specific editor:</p>
+    <pre>
+    $ EDITOR=emacs task order
+    </pre>
+
+    <p>move a task to the top of the stack:</p>
+    <pre>
+    task prioritise task-id
+    </pre>
+
+    <p>list all complete tasks:</p>
+    <pre>
+    task history
+    </pre>
+
+    <p>search in list of complete tasks:</p>
+    <pre>
+    task history searchterm
+    </pre>
+
+    <h2>installation</h2>
+    
+    <p>
+      Task is a single shell script. Just put it on your path and you are done.
+    </p>
+
+    <p>
+      It is also a standard practice to utilise two aliases for task. One 
+      representing a task file in your current directory, and one representing 
+      a global task file in your home directory. The current convention for 
+      these aliases is `x` for the local instance of task, and `xx` for the 
+      global instance of task.
+    </p>
+
+    <pre>
+    alias x=task    
+    alias xx="TASK_FILE=$HOME/.task x"
+    </pre>
+
+    <h2>release</h2>
+
+    <p>
+      The current released version is 0.5.
+    </p>
+    <ul>
+       <li><a href="/release/0.5/task-0.5.tar.gz">task-0.5.tar.gz</a> <a href="/release/0.5/task-0.5.tar.gz.sha1">[sha1]</a></li>
+    </ul>
+
+    <h2>code</h2>
+
+    <p>
+      Grab the code from the mirror at <a href="https://github.com/markhibberd/task">https://github.com/markhibberd/task</a>. 
+    </p>
+
+    <h2>license</h2>
+
+    <p>
+     The code is free to use under the terms of a <a href="https://github.com/markhibberd/task/master/LICENSE">3 point BSD license</a>
+
+
+    </p>
+
+    <h2>contact</h2>
+
+    <p>
+      Feel free to contact me <a href="mailto:mark@hibberd.id.au">mark@hibberd.id.au</a> or
+       <a href="http://twitter.com/markhibberd/">@markhibberd</a>.
+    </p>
+
+  </div>
+  <div style="padding-bottom: 50px;"></div>
+
+  </div>
+
+  <div id="rest">
+  <div id="footlinks">
+
+    <a href="http://mth.io"/>mth.io</a>
+  </div>
+  <div id="license">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/80x15.png" /></a>
+  </div>
+  </div>
+
+</div>
+
+
+
+</body>
+</html>
