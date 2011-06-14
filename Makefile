@@ -33,7 +33,9 @@ ZIP = ${DIST}/${MODULE}-${VERSION}.zip
 
 HASH = ${ETC}/sha1
 HASH_JAR = ${JAR}.sha1
+HASH_JAR_SRC = ${JAR_SRC}.sha1
 HASH_TAR = ${TAR}.sha1
+HASH_ZIP = ${ZIP}.sha1
 
 LICENSES = etc/licenses
 MANIFEST = etc/MANIFEST.MF
@@ -84,14 +86,14 @@ dist: clean ${TAR}
 www:
 	rsync -aH --stats --exclude \*~ ${WWW}/ ${PUBLISH_WWW}
 
-release: dist ${RELEASE} ${HASH_TAR} ${HASH_JAR}
-	cp -r ${TAR_IMAGE}/doc ${RELEASE_DIR}
-	cp ${TAR} ${HASH_TAR} ${JAR} ${HASH_TAR} ${RELEASE}
+release: dist ${RELEASE} ${HASH_TAR} ${HASH_JAR} ${HASH_ZIP} ${HASH_JAR_SRC}
+	cp -r ${TAR_IMAGE}/doc ${RELEASE}
+	cp ${TAR} ${HASH_TAR} ${JAR} ${HASH_JAR} ${ZIP} ${HASH_ZIP} ${JAR_SRC} ${HASH_JAR_SRC} ${RELEASE}
 
 publish: release
 	rsync -aH --stats --exclude \*~ ${RELEASE} ${PUBLISH_RELEASE}
 
-doc: ${DOC_PROD}
+doc: compile ${DOC_PROD}
 	(cd ${SRC_PROD} && \
 	find io -name "*.scala" | xargs -s 30000 \
 		scaladoc \
@@ -100,10 +102,16 @@ doc: ${DOC_PROD}
 			-classpath ../../lib/run/\*:../../lib/run/scalaz/\*:../../${CLS_PROD} \
 			-d ../../${DOC_PROD})
 
-${HASH_JAR}:
+${HASH_ZIP}: ${ZIP}
+	${HASH} ${ZIP} > ${HASH_ZIP}
+
+${HASH_JAR_SRC}: ${JAR_SRC}
+	${HASH} ${JAR_SRC} > ${HASH_JAR_SRC}
+
+${HASH_JAR}: ${JAR}
 	${HASH} ${JAR} > ${HASH_JAR}
 
-${HASH_TAR}:
+${HASH_TAR}: ${TAR}
 	${HASH} ${TAR} > ${HASH_TAR}
 
 ${DIST_MANIFEST}: ${GEN}
