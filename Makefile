@@ -21,7 +21,9 @@ XRAY = lib/compile/sxr_2.8.0-0.2.7-SNAPSHOT.jar
 XRAY_PROD = ${CLS_PROD}.sxr
 XRAY_DEMO = ${CLS_DEMO}.sxr
 
+ETC = etc
 DIST = ${GEN}/dist
+WWW = ${ETC}/www
 
 JAR = ${DIST}/${MODULE}.jar
 JAR_SRC = ${DIST}/${MODULE}-src.jar
