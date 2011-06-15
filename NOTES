@@ -1,0 +1,13 @@
+
+
+Resource needs dependent typing where we define a number of methods. For example:
+ . Get 
+ . Post
+ . Delete
+ . Put
+
+Then doing some type level programming be able to say:
+
+     resource(Get, (getfunction))
+     resource(Get, (getfunction))
+
