@@ -1,5 +1,17 @@
+Build and test Response
+Build and test Route
+Build and test Request matcher
+Build and test Content Type matcher
+Build and test Path matcher
+Build and test Method matcher
+Consistent combinators for sub route, constant route, chain route
+Build and test route evaluation
+Add WriterT based accumulation of attepted paths
+Build HttpServletRequest => Request
 Scala 2.8.1 and 2.9 cross compile
 Make java api not suck
-Add content type support
-Add WriterT based accumulation of attepted paths
+Java demo
+ReST demo
+Hello world demo
+Document 1.0
 Release 1.0
