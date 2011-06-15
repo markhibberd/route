@@ -1,3 +1,4 @@
+Scala 2.8.1 and 2.9 cross compile
 Make java api not suck
 Add content type support
 Add WriterT based accumulation of attepted paths

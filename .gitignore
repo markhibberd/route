@@ -1,4 +1,5 @@
 gen
+*~
 *.iws
 out
 .ensime.out
