@@ -4,6 +4,7 @@ import scalaz._, Scalaz._
 
 sealed trait Path {
   import Path._
+  import Response._
 
   def fold[X](f: List[String] => X): X
 
@@ -14,12 +15,18 @@ sealed trait Path {
     }
   }
 
-  def route[A](): Route[A]
-
-  def constant[A](a: A): Route[A] = a.pure[Route]
+  def route[A](r: Route[A]): Route[A] = 
+    Route.route(req => 
+      if (matches(req.path))
+        r.v(req)
+      else
+        notfound
+    )
     
+  def matches(path: String) = 
+    fold.mkString("/") == path
 
-
+  def constant[A](a: A): Route[A] = a.pure[Route]    
 }
 
 object Path {
