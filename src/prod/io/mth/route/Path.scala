@@ -1,7 +1,10 @@
 package io.mth.route
 
+import scalaz._, Scalaz._
+
 sealed trait Path {
   import Path._
+
   def fold[X](f: List[String] => X): X
 
   def </>(req: Path): Path = new Path {
@@ -11,22 +14,12 @@ sealed trait Path {
     }
   }
 
-  def head: Option[Path] = fold(_.headOption.map(Path.part(_)))
+  def route[A](): Route[A]
 
-  def tail: Path = fold(_.tail.foldLeft(base)((acc, v) => acc </> Path.part(v)))
+  def constant[A](a: A): Route[A] = a.pure[Route]
+    
 
-  def init: Path = fold(_.init.foldLeft(base)((acc, v) => acc </> Path.part(v)))
 
-  def last: Option[Path] = fold(_.lastOption.map(Path.part(_)))
-
-  def lastForInit(path: Path): Option[Path] = if (init == path) last else None
-
-  override def toString =
-    fold(_.mkString("/"))
-
-  override def equals(obj: Any) =
-    obj.isInstanceOf[Path] &&
-    obj.asInstanceOf[Path].fold(p1 => fold(p2 => p1 == p2))
 }
 
 object Path {
@@ -39,4 +32,6 @@ object Path {
   }
 
   def parse(s: String): Path = s.split('/').foldLeft(base)((acc, v) => acc </> part(v))
+
+  implicit def StringToPath(s: String) = part(s)
 }

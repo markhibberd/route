@@ -1,75 +1,41 @@
 package io.mth.route
 
+import scalaz._, Scalaz._
+
 sealed trait Route[A] {
+  import Route._
+  import Routes._
+
   val v: Request => Response[A]
+
+  def map[B](f: A => B): Route[B] = 
+    route(r => v(r) map (f))
+
+  def flatMap[B](f: A => Route[B]): Route[B] = 
+    route(r => v(r) flatMap (a => f(a).v(r)))
+
+  def |(r: Route[A]): Routes[A] = 
+    compound(this :: r :: Nil)
 }
 
 object Route {
+  import Response._
+
   def route[A](f: Request => Response[A]): Route[A] = new Route[A] {
     val v = f
   }
 
-  def constant[A](a: A): Route[A] = route(_ => Response.found(a))
-}
+  def constant[A](a: A): Route[A] = route(_ => found(a))
 
-
-
-trait Routes[A] {
-  def fold[X](
-    route: Route[A] => X, 
-    routes: (Route[A], Routes[A]) => X
-  ): X
-}
-
-object Routes {
-  def base[A](route: Route[A]): Routes[A] = new Routes[A] {
-    def fold[X](
-      r: Route[A] => X, 
-      rs: (Route[A], Routes[A]) => X
-    ) = r(route)
+  implicit val RouteFunctor: Functor[Route] = new Functor[Route] {
+    def fmap[A, B](a: Route[A], f: A => B) = a map f
   }
 
-
-  implicit def RouteToRoutes[A](r: Route[A]): Routes[A] = base(r)
-}
-
-
-
-trait Request {
-}
-
-trait Response[A] {
-  def fold[X](
-    found: A => X,
-    notfound: => X,
-    failure: RoutingFailure => X
-  ): X
-}
-
-object Response {
-  def found[A](a: A): Response[A] = new Response[A] {
-    def fold[X](
-      found: A => X,
-      notfound: => X,
-      failure: RoutingFailure => X
-    ) = found(a)
+  implicit val RoutePure: Pure[Route] = new Pure[Route] {
+    def pure[A](a: => A) = constant(a)
   }
 
-  def notfound[A]: Response[A] = new Response[A] {
-    def fold[X](
-      found: A => X,
-      notfound: => X,
-      failure: RoutingFailure => X
-    ) = notfound
-  }
-
-  def failure[A](e: RoutingFailure): Response[A] = new Response[A] {
-    def fold[X](
-      found: A => X,
-      notfound: => X,
-      failure: RoutingFailure => X
-    ) = failure(e)
+  implicit val RouteBind: Bind[Route] = new Bind[Route] {
+    def bind[A, B](a: Route[A], f: A => Route[B]) = a flatMap f
   }
 }
-
-case class RoutingFailure(message: String)
