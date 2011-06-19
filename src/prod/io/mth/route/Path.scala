@@ -15,6 +15,8 @@ sealed trait Path {
     }
   }
 
+  def apply[A](a: A) = constant(a)
+
   def route[A](r: Route[A]): Route[A] = 
     Route.route(req => 
       if (matches(req.path))
@@ -24,9 +26,10 @@ sealed trait Path {
     )
     
   def matches(path: String) = 
-    fold.mkString("/") == path
+    fold(_.mkString("/") == path)
 
-  def constant[A](a: A): Route[A] = a.pure[Route]    
+  def constant[A](a: A): Route[A] = 
+    route(a.pure[Route])
 }
 
 object Path {
