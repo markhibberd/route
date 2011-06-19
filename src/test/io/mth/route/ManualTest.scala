@@ -8,18 +8,21 @@ import Request._
 class ManualTest extends FunSuite { 
   test("printing things") {
     val route = ("foo" </> "bar").route(
-      Get("foo/bar.get")
+      Post("foo/bar.post") |
+      Get.route(
+        ContentType.html("foo/bar.get.html") |
+        ContentType.plain("foo/bar.get.plain")
+      )
     )
 
-    val r1 = request("GET", "foo/bar", "text/html")
-    val r2 = request("PUT", "foo/bar", "text/html")
-    val r3 = request("GET", "foo/baz", "text/html")
-
-
-    val x1 = route.v(r1)
-    val x2 = route.v(r1)
-    val x3 = route.v(r1)
-
+    val requests = List(
+      request("POST", "foo/bar", "text/html"),
+      request("GET", "foo/bar", "text/html"),
+      request("GET", "foo/bar", "text/plain"),
+      request("GET", "foo/bar", "application/json"),
+      request("PUT", "foo/bar", "text/html"),
+      request("GET", "foo/baz", "text/html")
+    )
 
     def print[A](r: Response[A]): Unit = println(r.fold(
       "found [" + _ + "]",
@@ -27,23 +30,6 @@ class ManualTest extends FunSuite {
       "fail [" + _ + "]"
     ))
 
-    print(x1)
-    print(x2)
-    print(x3)
-/*
-    import Path._
-
-    (base </> "fred" </> "bar").route(
-      Get("fred.bar.get") || Put("fred.bar.put")
-    ) ||
-    (base </> "fred" </> "bob").route(
-      (Get("bob") || Put("bob")).flatMap(v => 
-        html(renderhtml(v)) || xml(renderbobxml(v))
-      )
-    ) ||
-    (base </> "fred" </> string).parameterized(id =>
-      Get("fred." + id)
-    )
-  */  
+    requests.foreach(r => print(route(r)))
   }
 }

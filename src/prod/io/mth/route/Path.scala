@@ -20,7 +20,7 @@ sealed trait Path {
   def route[A](r: Route[A]): Route[A] = 
     Route.route(req => 
       if (matches(req.path))
-        r.v(req)
+        r(req)
       else
         notfound
     )

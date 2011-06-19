@@ -9,7 +9,7 @@ sealed trait Method {
   def route[A](r: Route[A]): Route[A] = 
     Route.route(req => 
       if (matches(req.method))
-        r.v(req)
+        r(req)
       else
         notfound
     )
