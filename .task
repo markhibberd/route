@@ -1,4 +1,5 @@
 Construct a wildcarded path matcher
+Combination matchers, e.g. Multiple methods, one result.
 Add WriterT based accumulation of attepted paths
 Build HttpServletRequest => Request
 Scala 2.8.1 and 2.9 cross compile
