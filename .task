@@ -1,15 +1,8 @@
-Build and test Response
-Build and test Route
-Build and test Request matcher
-Build and test Content Type matcher
-Build and test Path matcher
-Build and test Method matcher
-Consistent combinators for sub route, constant route, chain route
-Build and test route evaluation
+Construct a wildcarded path matcher
 Add WriterT based accumulation of attepted paths
 Build HttpServletRequest => Request
 Scala 2.8.1 and 2.9 cross compile
-Make java api not suck
+Make a java api that does not suck
 Java demo
 ReST demo
 Hello world demo
