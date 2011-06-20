@@ -3,8 +3,6 @@ package io.mth.route
 import scalaz._, Scalaz._
 
 trait Response[A] {
-  import Response._
-
   def fold[X](
     found: A => X,
     notfound: => X,
@@ -21,7 +19,9 @@ trait Response[A] {
   )
 }
 
-object Response {
+object Response extends Responses
+
+trait Responses {
   def found[A](a: A): Response[A] = new Response[A] {
     def fold[X](
       found: A => X,

@@ -3,45 +3,62 @@ package io.mth.route
 import scalaz._, Scalaz._
 
 sealed trait Path {
-  import Path._
-  import Response._
+  val parts: List[Part]
 
-  def fold[X](f: List[String] => X): X
+  def length = parts.size
 
-  def </>(req: Path): Path = new Path {
-    val combined = Path.this.fold(p1 => req.fold(p2 => p1 ++ p2))
-    def fold[X](f: List[String] => X) = {
-      f(combined)
-    }
+  def head = parts.head
+
+  def tail = path(parts.tail)
+
+  def split(n: Int) = parts.splitAt(n) match {
+    case (xs, ys) => (path(xs), path(ys))
   }
 
-  def apply[A](a: A) = constant(a)
+  def </>(p: Part): Path = 
+    path(parts ::: p :: Nil)
+
+  def <+>(p: Path): Path = 
+    path(parts ::: p.parts)
+
+  def <%>[A](w: Wildcard[A]) = 
+    wildpart(this, w)
+
+  def apply[A](a: A) = 
+    constant(a)
 
   def route[A](r: Route[A]): Route[A] = 
-    Route.route(req => 
-      if (matches(req.path))
+    Route.route(req =>
+      if (req.path.parts == parts)
         r(req)
       else
         notfound
     )
     
-  def matches(path: String) = 
-    fold(_.mkString("/") == path)
-
   def constant[A](a: A): Route[A] = 
     route(a.pure[Route])
+
+  def startsWith[A](p: Path, t: Path => A, f: => A) =
+    if (length >= p.length) {
+      val (common, rest) = parts.splitAt(p.length)
+      if (common == p.parts)
+        t(path(rest))
+      else
+        f
+    } else
+      f
+
 }
 
-object Path {
-  def base: Path = new Path {
-    def fold[X](f: List[String] => X) = f(Nil)
+object Path extends Paths
+
+trait Paths {
+  def base: Path = path(Nil)
+
+  def path(ps: List[Part]): Path = new Path {
+    val parts = ps
   }
 
-  def part(s: String): Path = new Path {
-    def fold[X](f: List[String] => X) = f(s :: Nil)
-  }
-
-  def parse(s: String): Path = s.split('/').foldLeft(base)((acc, v) => acc </> part(v))
-
-  implicit def StringToPath(s: String) = part(s)
+  def parsePath(s: String): Path =
+    path(s.split("/").toList map (p => Part.part(p)))
 }

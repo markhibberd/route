@@ -1,15 +1,20 @@
 package io.mth.route
 
 trait Request {
-  def method: String
-  def path: String
-  def contentType: String
+  def method: Method
+  def path: Path
+  def contentType: ContentType
 }
 
-object Request {
-  def request(m: String, p: String, c: String): Request = new Request {
-    def method: String = m
-    def path: String = p
-    def contentType: String = c
+object Request extends Requests
+
+trait Requests {
+  def request(m: Method, p: Path, c: ContentType): Request = new Request {
+    def method = m
+    def path = p
+    def contentType = c
   }
+
+  def stringRequest(m: String, p: String, c: String) = 
+    request(parseMethod(m), parsePath(p), contentType(c))
 }

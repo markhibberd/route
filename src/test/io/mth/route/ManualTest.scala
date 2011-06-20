@@ -1,8 +1,6 @@
 package io.mth.route
 
 import org.scalatest.FunSuite
-import Path._
-import Request._
 
 
 class ManualTest extends FunSuite { 
@@ -13,15 +11,26 @@ class ManualTest extends FunSuite {
         ContentType.html("foo/bar.get.html") |
         ContentType.plain("foo/bar.get.plain")
       )
+    ) | ("baz" <%> stringx).route(s =>
+      Put("baz/" + s + ".put")
+    ) | ("bat" <%> stringx <%%> (stringx, (s1: String, s2: String) => s1 + ":" + s2)).route(s =>
+      Get("bat/" + s + ".put")
     )
 
     val requests = List(
-      request("POST", "foo/bar", "text/html"),
-      request("GET", "foo/bar", "text/html"),
-      request("GET", "foo/bar", "text/plain"),
-      request("GET", "foo/bar", "application/json"),
-      request("PUT", "foo/bar", "text/html"),
-      request("GET", "foo/baz", "text/html")
+      stringRequest("POST", "foo/bar", "text/html"),
+      stringRequest("GET", "foo/bar", "text/html"),
+      stringRequest("GET", "foo/bar", "text/plain"),
+      stringRequest("GET", "foo/bar", "application/json"),
+      stringRequest("PUT", "foo/bar", "text/html"),
+      stringRequest("GET", "foo/baz", "text/html"),
+      stringRequest("PUT", "baz/a", "text/html"),
+      stringRequest("PUT", "baz/b", "text/html"),
+      stringRequest("GET", "baz/b", "text/html"),
+      stringRequest("GET", "bat/1/2", "text/html"),
+      stringRequest("GET", "bat/3/4", "text/html"),
+      stringRequest("GET", "bat/3/4/5", "text/html"),
+      stringRequest("GET", "bat/3", "text/html")
     )
 
     def print[A](r: Response[A]): Unit = println(r.fold(

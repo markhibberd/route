@@ -3,9 +3,6 @@ package io.mth.route
 import scalaz._, Scalaz._
 
 sealed trait Route[A] {
-  import Route._
-  import Response._
-
   val dispatch: Request => Response[A]
 
   def apply(request: Request) = 
@@ -28,14 +25,15 @@ sealed trait Route[A] {
     chain(r)
 }
 
-object Route {
-  import Response._
 
+object Route extends Routes
+
+trait Routes {
   def route[A](f: Request => Response[A]): Route[A] = new Route[A] {
     val dispatch = f
   }
 
-  def constant[A](a: A): Route[A] = route(_ => found(a))
+  def constant[A](a: => A): Route[A] = route(_ => found(a))
 
   implicit val RouteFunctor: Functor[Route] = new Functor[Route] {
     def fmap[A, B](a: Route[A], f: A => B) = a map f

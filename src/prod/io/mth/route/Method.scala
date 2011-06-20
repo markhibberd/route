@@ -3,12 +3,9 @@ package io.mth.route
 import scalaz._, Scalaz._
 
 sealed trait Method {
-  import Path._
-  import Response._
-
   def route[A](r: Route[A]): Route[A] = 
     Route.route(req => 
-      if (matches(req.method))
+      if (this == req.method)
         r(req)
       else
         notfound
@@ -18,15 +15,19 @@ sealed trait Method {
 
   def constant[A](a: A): Route[A] = 
     route(a.pure[Route])
+}
 
-  def matches(m: String) = this match {
-    case Get => m == "GET"
-    case Put => m == "PUT"
-    case Post => m == "POST"
-    case Head => m == "HEAD"
-    case Delete => m == "DELETE"
-    case Options => m == "OPTIONS"
-    case Trace => m == "TRACE"
+object Method extends Methods
+
+trait Methods {
+  def parseMethod(m: String) = m match {
+    case "GET" => Get
+    case "PUT" => Put
+    case "POST" => Post
+    case "HEAD" => Head
+    case "DELETE" => Delete
+    case "OPTIONS" => Options
+    case "TRACE" => Trace
   }
 }
 
