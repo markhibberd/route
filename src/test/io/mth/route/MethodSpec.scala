@@ -4,12 +4,10 @@ import org.specs2.mutable._
 import org.scalacheck._
 import org.specs2.ScalaCheck
 import Data._
+import RouteMatchers._
 
 class MethodSpec extends Specification with ScalaCheck { 
-  "method constant path" in check { (m: Method, p: Path, c: ContentType, s: String) => 
-    m(s)(request(m, p, c)).fold(
-      r => r === s,
-      false,
-      _ => false)
+  "request method should always match" in check { (r: Request, atom: String) => 
+    r.method(atom)(r) must matchResponse(atom)
   }
 }

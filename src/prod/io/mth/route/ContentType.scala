@@ -6,8 +6,8 @@ sealed trait ContentType {
   val value: String
 
   def route[A](r: Route[A]): Route[A] = 
-    Route.route(req => 
-      if (value == req.contentType)
+    Route.route(req =>
+      if (this == req.contentType)
         r(req)
       else
         notfound
@@ -17,6 +17,14 @@ sealed trait ContentType {
 
   def constant[A](a: A): Route[A] = 
     route(a.pure[Route])
+
+  override def toString = value
+
+  override def hashCode = value.hashCode
+  
+  override def equals(o: Any) = 
+    o.isInstanceOf[ContentType] &&
+    o.asInstanceOf[ContentType].value == value
 }
 
 object ContentType extends ContentTypes

@@ -21,4 +21,11 @@ object Data {
   implicit def ArbitraryContentType: Arbitrary[ContentType] = Arbitrary(
     oneOf(List(html, plain))
   )
+
+  implicit def ArbitraryRequest: Arbitrary[Request] = 
+    Arbitrary(for {
+      m <- arbitrary[Method]
+      p <- arbitrary[Path]
+      c <- arbitrary[ContentType]
+    } yield request(m, p, c))
 }

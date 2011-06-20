@@ -62,7 +62,7 @@ compile: clean ${CLS_PROD} ${CLS_TEST} ${CLS_DEMO}
 
 test: compile
 	scala -cp ${CP_TEST} org.scalatest.tools.Runner -p ${CLS_TEST} -oDFW 
-	scala -cp lib/compile/\*:lib/run/\*:lib/run/scalaz/\*:lib/test/\*:gen/classes/prod:gen/classes/test  specs2.run io.mth.route.AllSpecs console
+	scala -cp lib/compile/\*:lib/run/\*:lib/run/scalaz/\*:lib/test/\*:gen/classes/prod:gen/classes/test  specs2.run io.mth.route.AllSpecs console nocolor
 
 ${JAR}: compile ${DIST_MANIFEST} ${DIST}
 	jar cfm ${JAR} ${DIST_MANIFEST} -C ${CLS_PROD} .
