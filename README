@@ -32,12 +32,13 @@ STATE
         The `route` library has a stable scala API for version 1.0.
 
 LIMITATIONS
-        Currently there are three missing features planned for 
-        version 2.0:
+        Currently there are four missing features planned for 
+        version 1.0:
           1. A clean java API.
           2. Combinators for routing multiple matchers to one target.
           3. Better access to request including headers and query
              parameters.
+          4. WriterT based tracing of route evaluation.
 
 AUTHOR
         Mark Hibberd <mark@hibberd.id.au>
