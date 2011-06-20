@@ -17,6 +17,35 @@ trait Response[A] {
     notfound,
     f => failure(f)
   )
+
+  def toOption = fold(
+    a => Some(a),
+    None, 
+    _ => None
+  )
+
+  def or(a: => A) = 
+    toOption.getOrElse(a)
+
+  override def toString = fold(
+    a => "value[" + a + "]",
+    "notfound",
+    f => "failure[" + f.message + "]"
+  )
+
+  override def equals(o: Any) = 
+    o.isInstanceOf[Response[_]] &&
+    o.asInstanceOf[Response[_]].fold(
+      a => fold(_ == a, false, _ => false),
+      fold(_ => false, true, _ => false),
+      f => fold(_ => false, false, _ == f)
+    )
+        
+  override def hashCode = fold(
+    _.hashCode,
+    0,
+    _.hashCode
+  )
 }
 
 object Response extends Responses

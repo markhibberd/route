@@ -19,7 +19,7 @@ object Data {
     } yield path(ps))
 
   implicit def ArbitraryContentType: Arbitrary[ContentType] = Arbitrary(
-    oneOf(List(html, plain))
+    oneOf(List(text.html, text.plain, text.json, text.xml, application.json, application.xml))
   )
 
   implicit def ArbitraryRequest: Arbitrary[Request] = 

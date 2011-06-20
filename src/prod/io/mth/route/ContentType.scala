@@ -34,6 +34,15 @@ trait ContentTypes {
     val value = mime
   }
 
-  def html = contentType("text/html")
-  def plain = contentType("text/plain")
+  object text {
+    def html = contentType("text/html")
+    def plain = contentType("text/plain")
+    def json = contentType("text/json")
+    def xml = contentType("text/xml")
+  }
+
+  object application {
+    def json = contentType("application/json")
+    def xml = contentType("application/xml")
+  }
 }
