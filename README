@@ -2,13 +2,42 @@ NAME
         route - a library for pattern matching and dispatching http requests
 
 DESCRIPTION
-	t.b.d.
+	Route is a library of data types and combinators for matching
+        http requests. The matching mechanism allows the library to 
+        build dispatch/routing tables for web applications.
 
 USAGE
-	t.b.d.
+	The library is pretty straight forward to use. Simply:
+          . import io.mth.route._
+          . build a route using the combinators available
+          . evaluate routes for each request
 
+        A simple example:
+
+          import io.mth.route._
+
+          val route = 
+            ("book" <%> stringtoken).route(book =>  // match urls with 2 framents starting with book
+              Get(getbook(book)) |                  // for those urls, dispatch to getbook when the method is Get
+              Put(createbook(book))                 // for those urls, dispatch to createbook when the method is Put
+            ) | ("people" </> "authors").route(     // otherwise if the url is exactly people/authors
+              Get(listauthors)                      // and the method is get dispatch to listauthors
+            )
+
+          val req = request(Get, "book" </> "1984", text.html)
+ 
+          val res = route(req)
+ 
 STATE
-        The `route` library is currently in under development.
+        The `route` library has a stable scala API for version 1.0.
+
+LIMITATIONS
+        Currently there are three missing features planned for 
+        version 2.0:
+          1. A clean java API.
+          2. Combinators for routing multiple matchers to one target.
+          3. Better access to request including headers and query
+             parameters.
 
 AUTHOR
         Mark Hibberd <mark@hibberd.id.au>
