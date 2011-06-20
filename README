@@ -1,5 +1,5 @@
 NAME
-        route
+        route - a library for pattern matching and dispatching http requests
 
 DESCRIPTION
 	t.b.d.
@@ -9,9 +9,6 @@ USAGE
 
 STATE
         The `route` library is currently in under development.
-
-LIMITATIONS
-	t.b.d.
 
 AUTHOR
         Mark Hibberd <mark@hibberd.id.au>
