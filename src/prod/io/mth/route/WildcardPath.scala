@@ -15,10 +15,7 @@ sealed trait WildcardPath[A] {
       case (rest, a) => f(a).matcher(rest)
     })
 
-  def </>(p: Part): WildcardPath[A] = 
-    this <+> p.toPath
-
-  def <+>(path: Path): WildcardPath[A] = 
+  def </>(path: Path): WildcardPath[A] = 
     wildcardpath(p => matcher(p) flatMap {
       case (rest, a) => 
         if (rest.parts == path.parts)

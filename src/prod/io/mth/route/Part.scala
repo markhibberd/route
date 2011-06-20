@@ -5,11 +5,8 @@ import scalaz._, Scalaz._
 sealed trait Part {
   val fragment: String
 
-  def </>(p: Part): Path =   
+  def </>(p: Path): Path = 
     toPath </> p
-
-  def <+>(p: Path): Path = 
-    toPath <+> p
 
   def <%>[A](w: Wildcard[A]): WildcardPath[A] = 
     toPath <%> w

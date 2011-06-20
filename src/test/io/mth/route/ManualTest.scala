@@ -11,9 +11,9 @@ class ManualTest extends FunSuite {
         ContentType.html("foo/bar.get.html") |
         ContentType.plain("foo/bar.get.plain")
       )
-    ) | ("baz" <%> stringx).route(s =>
+    ) | ("baz" <%> stringtoken).route(s =>
       Put("baz/" + s + ".put")
-    ) | ("bat" <%> stringx <%%> (stringx, (s1: String, s2: String) => s1 + ":" + s2)).route(s =>
+    ) | ("bat" <%> inttoken <%%> (inttoken, (i1: Int, i2: Int) => i1 + i2)).route(s =>
       Get("bat/" + s + ".put")
     )
 

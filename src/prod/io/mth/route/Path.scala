@@ -11,14 +11,15 @@ sealed trait Path {
 
   def tail = path(parts.tail)
 
+  def init = path(parts.init)
+
+  def last = parts.last
+
   def split(n: Int) = parts.splitAt(n) match {
     case (xs, ys) => (path(xs), path(ys))
   }
 
-  def </>(p: Part): Path = 
-    path(parts ::: p :: Nil)
-
-  def <+>(p: Path): Path = 
+  def </>(p: Path): Path = 
     path(parts ::: p.parts)
 
   def <%>[A](w: Wildcard[A]) = 
@@ -50,7 +51,11 @@ sealed trait Path {
 
 }
 
-object Path extends Paths
+object Path extends Paths {
+  implicit def StringToPath(s: String) = PartToPath(part(s))
+
+  implicit def PartToPath(p: Part) = path(p :: Nil)
+}
 
 trait Paths {
   def base: Path = path(Nil)
@@ -60,5 +65,5 @@ trait Paths {
   }
 
   def parsePath(s: String): Path =
-    path(s.split("/").toList map (p => Part.part(p)))
+    path(s.split("/").toList map (p => Part.part(p)))  
 }

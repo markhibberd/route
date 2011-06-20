@@ -1,6 +1,7 @@
 package io.mth.route
 
 import scalaz._, Scalaz._
+import scala.util.control.Exception._
 
 sealed trait Wildcard[A] {
   val parse: Part => Option[A] 
@@ -21,8 +22,11 @@ trait Wildcards {
     val parse = f
   }
 
-  def stringx: Wildcard[String] = 
+  def stringtoken: Wildcard[String] = 
     wildcard(p => Some(p.fragment))
+
+  def inttoken: Wildcard[Int] = 
+    wildcard(p => catching(classOf[NumberFormatException]) opt p.fragment.toInt)
 
   implicit val WildcardFunctor: Functor[Wildcard] = new Functor[Wildcard] {
     def fmap[A, B](a: Wildcard[A], f: A => B) = a map f
