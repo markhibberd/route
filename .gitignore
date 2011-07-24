@@ -6,3 +6,4 @@ target
 .ensime.out
 .idea/workspace.xml
 .idea/ant.xml
+/ensime

@@ -10,8 +10,8 @@
 
 :runtime-jars ("./lib/run" "./lib/test")
 
-:class-dirs ("./.ensime.out")
+:class-dirs ("./ensime")
 
-:target "./.ensime.out"
+:target "./ensime"
 
 )
