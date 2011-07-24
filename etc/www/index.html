@@ -30,6 +30,7 @@
 
   <div id="outerguts">
   <div id="guts">
+  <div id="post">
     <h1>route</h1>
       <div onclick='document.location="/release/1.0/route-1.0.tar.gz"; return false;' class="linked"
            style="-moz-border-radius: 15px;
@@ -51,22 +52,35 @@
     <h2>quick start</h2>
 
     <p>
-        A simple example:
+        Getting startes is pretty simple, just import the route package:
     </p>
     <pre>
-          import io.mth.route._
+import io.mth.route._
+    </pre>
 
-          val route = 
-            ("book" <%> stringtoken).route(book =>  // match urls with 2 framents starting with book
-              Get(getbook(book)) |                  // for those urls, dispatch to getbook when the method is Get
-              Put(createbook(book))                 // for those urls, dispatch to createbook when the method is Put
-            ) | ("people" </> "authors").route(     // otherwise if the url is exactly people/authors
-              Get(listauthors)                      // and the method is get dispatch to listauthors
-            )
-
-          val req = request(Get, "book" </> "1984", text.html)
- 
-          val res = route(req)
+    <p>
+        Build a route function:
+    </p>
+    <pre>
+val route = 
+  ("book" <%> stringtoken).route(book => 
+    Get(getbook(book)) |                
+    Put(createbook(book))              
+  ) | ("people" </> "authors").route( 
+    Get(listauthors)                 
+  )
+    </pre>
+    <p>
+        Construct or parse a request object.
+    </p>
+    <pre>
+val req = request(Get, "book" </> "1984", text.html)
+    </pre>
+    <p>
+        Apply request to route function.
+    </p>
+    <pre>       
+val res = route(req)
     </pre>
 
     <h2>release</h2>
@@ -119,7 +133,7 @@
     <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/80x15.png" /></a>
   </div>
   </div>
-
+  </div>
 </div>
 
 
