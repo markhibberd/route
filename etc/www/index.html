@@ -51,8 +51,23 @@
     <h2>quick start</h2>
 
     <p>
-        T.B.D.
+        A simple example:
     </p>
+    <pre>
+          import io.mth.route._
+
+          val route = 
+            ("book" <%> stringtoken).route(book =>  // match urls with 2 framents starting with book
+              Get(getbook(book)) |                  // for those urls, dispatch to getbook when the method is Get
+              Put(createbook(book))                 // for those urls, dispatch to createbook when the method is Put
+            ) | ("people" </> "authors").route(     // otherwise if the url is exactly people/authors
+              Get(listauthors)                      // and the method is get dispatch to listauthors
+            )
+
+          val req = request(Get, "book" </> "1984", text.html)
+ 
+          val res = route(req)
+    </pre>
 
     <h2>release</h2>
 

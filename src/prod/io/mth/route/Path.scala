@@ -65,5 +65,5 @@ trait Paths {
   }
 
   def parsePath(s: String): Path =
-    path(s.split("/").toList map (p => Part.part(p)))  
+    path(s.split("/").toList filterNot (p => p.trim == "") map (p => Part.part(p)))
 }
