@@ -1,5 +1,5 @@
 MODULE = route
-VERSION = 1.0 
+VERSION = 1.1 
 
 GEN = gen
 
@@ -17,10 +17,6 @@ CP_DEMO = ${CP_PROD}:${CLS_DEMO}
 CP_TEST = ${CP_DEMO}:${CLS_TEST}
 
 DOC_PROD = ${GEN}/doc/prod
-
-XRAY = lib/compile/sxr_2.8.0-0.2.7-SNAPSHOT.jar
-XRAY_PROD = ${CLS_PROD}.sxr
-XRAY_DEMO = ${CLS_DEMO}.sxr
 
 ETC = etc
 DIST = ${GEN}/dist
@@ -46,16 +42,16 @@ RELEASE = ${GEN}/release/${VERSION}
 PUBLISH_WWW = web@mth.io:${MODULE}.mth.io/data
 PUBLISH_RELEASE = web@mth.io:${MODULE}.mth.io/data/release/.
 
-DIRECTORIES = ${GEN} ${GEN}/tmp ${CLS_DEMO} ${CLS_PROD} ${CLS_TEST} ${DIST} ${TAR_IMAGE} ${TAR_IMAGE}/lib ${DOC_PROD} ${RELEASE} ${TAR_IMAGE}/doc/xray ${DEMO_TARGET}
+DIRECTORIES = ${GEN} ${GEN}/tmp ${CLS_DEMO} ${CLS_PROD} ${CLS_TEST} ${DIST} ${TAR_IMAGE} ${TAR_IMAGE}/lib ${TAR_IMAGE}/doc ${DOC_PROD} ${RELEASE} ${DEMO_TARGET}
 
 .PHONY: clean dist doc compile size repl 
 
 default: test dist
 
 compile: clean ${CLS_PROD} ${CLS_TEST} ${CLS_DEMO}
-	find ${SRC_PROD} -name "*.scala" -o -name "*.java" | xargs -s 30000 scalac -Xplugin:${XRAY} -P:sxr:base-directory:${SRC_PROD}  -classpath ${CP_BASE} -d ${CLS_PROD}
+	find ${SRC_PROD} -name "*.scala" -o -name "*.java" | xargs -s 30000 scalac -classpath ${CP_BASE} -d ${CLS_PROD}
 	find ${SRC_PROD} -name "*.java" | xargs -s 30000 javac -source 1.5 -target 1.5 -classpath ${CP_PROD} -d ${CLS_PROD}
-	find ${SRC_DEMO} -name "*.scala" -o -name "*.java" | xargs -s 30000 scalac -Xplugin:${XRAY} -P:sxr:base-directory:${SRC_DEMO}  -classpath ${CP_PROD} -d ${CLS_DEMO}
+	find ${SRC_DEMO} -name "*.scala" -o -name "*.java" | xargs -s 30000 scalac -classpath ${CP_PROD} -d ${CLS_DEMO}
 	find ${SRC_DEMO} -name "*.java" | xargs -s 30000 javac -source 1.5 -target 1.5 -classpath ${CP_PROD} -d ${CLS_DEMO}
 	find ${SRC_TEST} -name "*.scala" | xargs -s 30000 scalac -classpath ${CP_DEMO} -d ${CLS_TEST} 
 
@@ -68,11 +64,9 @@ ${JAR}: compile ${DIST_MANIFEST} ${DIST}
 ${JAR_SRC}: ${DIST}
 	jar cf ${JAR_SRC} -C ${SRC_PROD} .
 
-${TAR}: doc ${JAR} ${JAR_SRC} ${TAR_IMAGE} ${TAR_IMAGE}/lib ${TAR_IMAGE}/doc/xray ${DEMO_TARGET}
+${TAR}: doc ${JAR} ${JAR_SRC} ${TAR_IMAGE} ${TAR_IMAGE}/lib ${TAR_IMAGE}/doc ${DEMO_TARGET}
 	cp -r ${DOC_PROD} ${TAR_IMAGE}/doc/api
 	cp -r ${SRC_DEMO} ${TAR_IMAGE}/.
-	cp -r ${XRAY_PROD} ${TAR_IMAGE}/doc/xray/prod
-	cp -r ${XRAY_DEMO} ${TAR_IMAGE}/doc/xray/demo
 	cp lib/run/*.jar lib/run/scalaz/*.jar ${TAR_IMAGE}/lib
 	cp ${JAR} ${JAR_SRC} ${TAR_IMAGE}
 	cp README LICENSE ${TAR_IMAGE}
