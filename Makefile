@@ -1,7 +1,9 @@
 MODULE = route
-VERSION = 1.1 
+VERSION = 1.2 
 
 GEN = gen
+
+SCX = bin/scx
 
 SRC_PROD = src/prod
 SRC_TEST = src/test
@@ -49,11 +51,9 @@ DIRECTORIES = ${GEN} ${GEN}/tmp ${CLS_DEMO} ${CLS_PROD} ${CLS_TEST} ${DIST} ${TA
 default: test dist
 
 compile: clean ${CLS_PROD} ${CLS_TEST} ${CLS_DEMO}
-	find ${SRC_PROD} -name "*.scala" -o -name "*.java" | xargs -s 30000 scalac -classpath ${CP_BASE} -d ${CLS_PROD}
-	find ${SRC_PROD} -name "*.java" | xargs -s 30000 javac -source 1.5 -target 1.5 -classpath ${CP_PROD} -d ${CLS_PROD}
-	find ${SRC_DEMO} -name "*.scala" -o -name "*.java" | xargs -s 30000 scalac -classpath ${CP_PROD} -d ${CLS_DEMO}
-	find ${SRC_DEMO} -name "*.java" | xargs -s 30000 javac -source 1.5 -target 1.5 -classpath ${CP_PROD} -d ${CLS_DEMO}
-	find ${SRC_TEST} -name "*.scala" | xargs -s 30000 scalac -classpath ${CP_DEMO} -d ${CLS_TEST} 
+	${SCX} -j 1.5 -cp ${CP_BASE} ${SRC_PROD} ${CLS_PROD}
+	${SCX} -j 1.5 -cp ${CP_PROD} ${SRC_DEMO} ${CLS_DEMO}
+	${SCX} -cp ${CP_DEMO} ${SRC_TEST} ${CLS_TEST}
 
 test: compile
 	scala -cp lib/compile/\*:lib/run/\*:lib/run/scalaz/\*:lib/test/\*:gen/classes/prod:gen/classes/demo:gen/classes/test  specs2.run io.mth.route.AllSpecs console nocolor
