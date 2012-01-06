@@ -5,6 +5,8 @@ import scalaz._, Scalaz._
 sealed trait Path {
   val parts: List[Part]
 
+  def asString = parts.map(_.fragment).mkString("/")
+
   def length = parts.size
 
   def head = parts.head
@@ -24,6 +26,12 @@ sealed trait Path {
 
   def <%>[A](w: Wildcard[A]) = 
     wildpart(this, w)
+
+  def rest: WildcardPath[String] =
+    wildcardpath(p => p.startsWith(this,
+      rest => found((base, rest.asString)),
+      notfound
+    ))
 
   def apply[A](a: A) = 
     constant(a)

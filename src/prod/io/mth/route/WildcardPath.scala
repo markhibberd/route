@@ -18,7 +18,7 @@ sealed trait WildcardPath[A] {
   def </>(path: Path): WildcardPath[A] = 
     wildcardpath(p => matcher(p) flatMap {
       case (rest, a) => 
-        if (rest.parts == path.parts)
+        if (rest.parts == path.parts) // FIX looks like a bug, should this be starts with?
           found((Path.base, a))
         else
           notfound
@@ -39,8 +39,14 @@ sealed trait WildcardPath[A] {
           notfound
     })
 
-  def apply[B](b: B): Route[B] = 
-    constant(b)
+  def rest: WildcardPath[(A, String)] =
+    wildcardpath(p => matcher(p) flatMap {
+      case (rest, a) =>
+          found((Path.base, (a, rest.asString)))
+    })
+
+  def apply[B](r: A => B): Route[B] =
+    route(a => r(a).pure[Route])
 
   def route[B](r: A => Route[B]): Route[B] = 
     Route.route(req =>
@@ -54,7 +60,7 @@ sealed trait WildcardPath[A] {
       })
     
   def constant[B](b: B): Route[B] = 
-    route(_ => b.pure[Route])
+    apply(_ => b)
 }
 
 object WildcardPath extends WildcardPaths

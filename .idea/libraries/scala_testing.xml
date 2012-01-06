@@ -1,10 +1,15 @@
 <component name="libraryTable">
   <library name="scala-testing">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/test/scalatest-1.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/test/scalacheck_2.8.0-1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/specs2_2.9.1-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/specs2-scalaz-core_2.9.1-6.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/scalacheck_2.9.0-1.9.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/test/specs2-scalaz-core_2.9.1-6.0.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/scalacheck_2.9.0-1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/specs2_2.9.1-1.6-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

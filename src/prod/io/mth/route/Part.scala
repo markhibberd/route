@@ -11,6 +11,9 @@ sealed trait Part {
   def <%>[A](w: Wildcard[A]): WildcardPath[A] = 
     toPath <%> w
 
+  def rest =
+    toPath.rest
+
   def toPath = Path.path(this :: Nil)
 
   override def toString = fragment 
