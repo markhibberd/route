@@ -21,10 +21,10 @@ sealed trait Path {
     case (xs, ys) => (path(xs), path(ys))
   }
 
-  def </>(p: Path): Path = 
+  def </>(p: Path): Path =
     path(parts ::: p.parts)
 
-  def <%>[A](w: Wildcard[A]) = 
+  def <%>[A](w: Wildcard[A]) =
     wildpart(this, w)
 
   def rest: WildcardPath[String] =
@@ -33,19 +33,19 @@ sealed trait Path {
       notfound
     ))
 
-  def apply[A](a: A) = 
+  def apply[A](a: A) =
     constant(a)
 
-  def route[A](r: Route[A]): Route[A] = 
+  def route[A](r: Route[A]): Route[A] =
     Route.route(req =>
       if (req.path.parts == parts)
         r(req)
       else
         notfound
     )
-    
-  def constant[A](a: A): Route[A] = 
-    route(a.pure[Route])
+
+  def constant[A](a: A): Route[A] =
+    route(a.point[Route])
 
   def startsWith[A](p: Path, t: Path => A, f: => A) =
     if (length >= p.length) {

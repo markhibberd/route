@@ -5,7 +5,7 @@ import scalaz._, Scalaz._
 sealed trait ContentType {
   val value: String
 
-  def route[A](r: Route[A]): Route[A] = 
+  def route[A](r: Route[A]): Route[A] =
     Route.route(req =>
       if (this == req.contentType)
         r(req)
@@ -15,14 +15,14 @@ sealed trait ContentType {
 
   def apply[A](a: A) = constant(a)
 
-  def constant[A](a: A): Route[A] = 
-    route(a.pure[Route])
+  def constant[A](a: A): Route[A] =
+    route(a.point[Route])
 
   override def toString = value
 
   override def hashCode = value.hashCode
-  
-  override def equals(o: Any) = 
+
+  override def equals(o: Any) =
     o.isInstanceOf[ContentType] &&
     o.asInstanceOf[ContentType].value == value
 }

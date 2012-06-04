@@ -25,7 +25,7 @@ object build extends Build {
   , settings = Defaults.defaultSettings ++ Seq[Sett](
       name := "route"
     , organization := "io.mth"
-    , version := "1.2-SNAPSHOT"
+    , version := "1.3-SNAPSHOT"
     , scalaVersion := "2.9.2"
     , scalacOptions := Seq(
         "-deprecation"

@@ -46,7 +46,7 @@ sealed trait WildcardPath[A] {
     })
 
   def apply[B](r: A => B): Route[B] =
-    route(a => r(a).lift[Route])
+    route(a => r(a).point[Route])
 
   def route[B](r: A => Route[B]): Route[B] =
     Route.route(req =>
