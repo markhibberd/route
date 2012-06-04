@@ -4,39 +4,33 @@ import scalaz._, Scalaz._
 import scala.util.control.Exception._
 
 sealed trait Wildcard[A] {
-  val parse: Part => Option[A] 
+  val parse: Part => Option[A]
 
   def apply(p: Part) = parse(p)
 
   def map[B](f: A => B) =
     wildcard(p => parse(p) map f)
 
-  def flatMap[B](f: A => Wildcard[B]) = 
+  def flatMap[B](f: A => Wildcard[B]) =
     wildcard(p => parse(p) flatMap (a => f(a)(p)))
 }
 
-object Wildcard extends Wildcards 
+object Wildcard extends Wildcards
 
 trait Wildcards {
   def wildcard[A](f: Part => Option[A]): Wildcard[A] = new Wildcard[A] {
     val parse = f
   }
 
-  def stringtoken: Wildcard[String] = 
+  def stringtoken: Wildcard[String] =
     wildcard(p => Some(p.fragment))
 
-  def inttoken: Wildcard[Int] = 
+  def inttoken: Wildcard[Int] =
     wildcard(p => catching(classOf[NumberFormatException]) opt p.fragment.toInt)
 
-  implicit val WildcardFunctor: Functor[Wildcard] = new Functor[Wildcard] {
-    def fmap[A, B](a: Wildcard[A], f: A => B) = a map f
-  }
-
-  implicit val WildcardPure: Pure[Wildcard] = new Pure[Wildcard] {
-    def pure[A](a: => A) = wildcard(_ => Some(a))
-  }
-
-  implicit val WildcardBind: Bind[Wildcard] = new Bind[Wildcard] {
-    def bind[A, B](a: Wildcard[A], f: A => Wildcard[B]) = a flatMap f
+  implicit val WildcardMonad: Monad[Wildcard] = new Monad[Wildcard] {
+    def point[A](a: => A) = wildcard(_ => Some(a))
+    def bind[A, B](a: Wildcard[A])(f: A => Wildcard[B]) = a flatMap f
+    override def map[A, B](a: Wildcard[A])(f: A => B) = a map f
   }
 }
