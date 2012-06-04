@@ -1,9 +1,7 @@
-gen
+/gen
+/project/target
+/dist
+/dependency
+/scratch
 *~
-*.iws
-out
-target
-.ensime.out
-.idea/workspace.xml
-.idea/ant.xml
-/ensime
+*#
