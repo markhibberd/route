@@ -38,6 +38,7 @@ trait ContentTypes {
     def html = contentType("text/html")
     def plain = contentType("text/plain")
     def json = contentType("text/json")
+    def javascript = contentType("text/javascript")
     def xml = contentType("text/xml")
   }
 
