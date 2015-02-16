@@ -2,7 +2,7 @@ package io.mth.route
 
 import org.scalacheck._
 import Arbitrary.arbitrary
-import Gen.{frequency, choose, listOfN, value, oneOf}
+import Gen.{frequency, choose, listOfN, oneOf}
 
 object Data {
   implicit def ArbitraryMethod: Arbitrary[Method] = Arbitrary(
