@@ -27,11 +27,16 @@ object build extends Build {
       name := "route"
     , organization := "io.mth"
     , version := "1.3-SNAPSHOT"
-    , scalaVersion := "2.9.2"
+    , scalaVersion := "2.11.5"
+    , crossScalaVersions := Seq("2.10.4", scalaVersion.value)
     , scalacOptions := Seq(
         "-deprecation"
       , "-unchecked"
+      , "-feature"
+      , "-language:_"
       )
+    , scalacOptions in (Compile,console) := Seq("-deprecation", "-language:_", "-feature")
+    , scalacOptions in (Test,console) := Seq("-deprecation", "-language:_", "-feature")
     , sourceDirectory in Compile <<= baseDirectory { _ / "src" }
     , sourceDirectory in Test <<= baseDirectory { _ / "test" }
     , historyPath <<= baseDirectory { b => Some(b / "gen/sbt/.history") }
@@ -39,9 +44,10 @@ object build extends Build {
     , testOptions in Test += Tests.Setup(() => System.setProperty("specs2.outDir", "gen/sbt/target/specs2-reports"))
     , publishSetting
     , libraryDependencies ++= Seq(
-        ("org.scalaz" %% "scalaz-core" % "7.0.0-M7").cross(CrossVersion.full)
-      , ("org.specs2" %% "specs2" % "1.12.2" % "test").cross(CrossVersion.full)
-      , ("org.scalacheck" %% "scalacheck" % "1.10.0" % "test").cross(CrossVersion.full)
+        ("org.scalaz" %% "scalaz-core" % "7.1.0")
+      , ("org.specs2" %% "specs2-core" % "2.4.16" % "test")
+      , ("org.specs2" %% "specs2-scalacheck" % "2.4.16" % "test")
+      , ("org.scalacheck" %% "scalacheck" % "1.12.2" % "test")
       )
     )
   )
