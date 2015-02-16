@@ -26,7 +26,7 @@ object build extends Build {
   , settings = Defaults.defaultSettings ++ Seq[Sett](
       name := "route"
     , organization := "io.mth"
-    , version := "1.3-SNAPSHOT"
+    , version := "1.3"
     , scalaVersion := "2.11.5"
     , crossScalaVersions := Seq("2.10.4", scalaVersion.value)
     , scalacOptions := Seq(
