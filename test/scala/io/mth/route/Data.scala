@@ -2,7 +2,7 @@ package io.mth.route
 
 import org.scalacheck._
 import Arbitrary.arbitrary
-import Gen.{frequency, choose, listOfN, oneOf}
+import Gen.{choose, listOfN, oneOf}
 
 object Data {
   implicit def ArbitraryMethod: Arbitrary[Method] = Arbitrary(
@@ -10,7 +10,7 @@ object Data {
   )
 
   implicit def ArbitraryPart: Arbitrary[Part] = 
-    Arbitrary(arbitrary[String] map (part))
+    Arbitrary(arbitrary[String] map part)
 
   implicit def ArbitraryPath: Arbitrary[Path] = 
     Arbitrary(for {

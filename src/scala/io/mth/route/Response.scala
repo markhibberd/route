@@ -1,6 +1,6 @@
 package io.mth.route
 
-import scalaz._, Scalaz._
+import scalaz.Monad
 
 trait Response[A] {
   def fold[X](

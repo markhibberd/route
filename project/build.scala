@@ -12,7 +12,7 @@ object build extends Build {
         , "releases" at "http://oss.sonatype.org/content/repositories/releases"
         ))
 
-  lazy val publishSetting = publishTo <<= (version).apply{
+  lazy val publishSetting = publishTo <<= version.apply{
     v => {
       val flavour = if (v.trim.endsWith("SNAPSHOT")) "snapshots" else "releases"
       Some(Resolver.sftp("repo.mth.io","repo.mth.io", "repo.mth.io/data/snapshots") as ("web", new java.io.File(
@@ -34,6 +34,7 @@ object build extends Build {
       , "-unchecked"
       , "-feature"
       , "-language:_"
+      , "-language:implicitConversions"
       )
     , scalacOptions in (Compile,console) := Seq("-deprecation", "-language:_", "-feature")
     , scalacOptions in (Test,console) := Seq("-deprecation", "-language:_", "-feature")
@@ -44,10 +45,10 @@ object build extends Build {
     , testOptions in Test += Tests.Setup(() => System.setProperty("specs2.outDir", "gen/sbt/target/specs2-reports"))
     , publishSetting
     , libraryDependencies ++= Seq(
-        ("org.scalaz" %% "scalaz-core" % "7.2.5")
-      , ("org.specs2" %% "specs2-core" % "3.8.4" % "test")
-      , ("org.specs2" %% "specs2-scalacheck" % "3.8.4" % "test")
-      , ("org.scalacheck" %% "scalacheck" % "1.13.2" % "test")
+        "org.scalaz" %% "scalaz-core" % "7.2.5"
+      , "org.specs2" %% "specs2-core" % "3.8.4" % "test"
+      , "org.specs2" %% "specs2-scalacheck" % "3.8.4" % "test"
+      , "org.scalacheck" %% "scalacheck" % "1.13.2" % "test"
       )
     )
   )

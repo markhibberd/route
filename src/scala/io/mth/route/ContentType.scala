@@ -1,6 +1,6 @@
 package io.mth.route
 
-import scalaz._, Scalaz._
+import scalaz.syntax.applicative._
 
 sealed trait ContentType {
   val value: String

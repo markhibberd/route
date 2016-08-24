@@ -1,6 +1,6 @@
 package io.mth.route
 
-import scalaz._, Scalaz._
+import scalaz.Monad
 
 sealed trait Route[A] {
   val dispatch: Request => Response[A]
@@ -9,7 +9,7 @@ sealed trait Route[A] {
     dispatch(request)
 
   def map[B](f: A => B): Route[B] =
-    route(r => dispatch(r) map (f))
+    route(r => dispatch(r) map f)
 
   def flatMap[B](f: A => Route[B]): Route[B] =
     route(r => dispatch(r) flatMap (a => f(a)(r)))
@@ -30,14 +30,14 @@ object Route extends Routes
 
 trait Routes {
   def route[A](f: Request => Response[A]): Route[A] = new Route[A] {
-    val dispatch = f
+    override val dispatch = f
   }
 
   def constant[A](a: => A): Route[A] = route(_ => found(a))
 
   implicit val RouteMonad: Monad[Route] = new Monad[Route] {
-    def point[A](a: => A) = constant(a)
-    def bind[A, B](a: Route[A])(f: A => Route[B]) = a flatMap f
+    override def point[A](a: => A) = constant(a)
+    override def bind[A, B](a: Route[A])(f: A => Route[B]) = a flatMap f
     override def map[A, B](a: Route[A])(f: A => B) = a map f
   }
 }

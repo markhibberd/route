@@ -1,7 +1,7 @@
 package io.mth.route
 
-import scalaz._, Scalaz._
 import scala.util.control.Exception._
+import scalaz.Monad
 
 sealed trait Wildcard[A] {
   val parse: Part => Option[A]

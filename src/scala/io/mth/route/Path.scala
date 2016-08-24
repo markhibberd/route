@@ -1,11 +1,14 @@
 package io.mth.route
 
-import scalaz._, Scalaz._
+import scalaz.syntax.foldable._
+import scalaz.syntax.applicative._
+import scalaz.std.list._
+import scalaz.std.string._
 
 sealed trait Path {
   val parts: List[Part]
 
-  def asString = parts.map(_.fragment).mkString("/")
+  def asString = parts.map(_.fragment).intercalate("/")
 
   def length = parts.size
 
@@ -60,9 +63,9 @@ sealed trait Path {
 }
 
 object Path extends Paths {
-  implicit def StringToPath(s: String) = PartToPath(part(s))
+  implicit def StringToPath(s: String): Path = PartToPath(part(s))
 
-  implicit def PartToPath(p: Part) = path(p :: Nil)
+  implicit def PartToPath(p: Part): Path = path(p :: Nil)
 }
 
 trait Paths {

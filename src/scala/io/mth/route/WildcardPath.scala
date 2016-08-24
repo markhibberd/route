@@ -1,6 +1,7 @@
 package io.mth.route
 
-import scalaz._, Scalaz._
+import scalaz.Monad
+import scalaz.syntax.applicative._
 
 sealed trait WildcardPath[A] {
   val matcher: Path => Response[(Path, A)]
@@ -51,12 +52,11 @@ sealed trait WildcardPath[A] {
   def route[B](r: A => Route[B]): Route[B] =
     Route.route(req =>
       matcher(req.path) flatMap {
-        case (rest, a) => {
+        case (rest, a) =>
           if (rest.length == 0)
             r(a)(req)
           else
             notfound
-        }
       })
 
   def constant[B](b: B): Route[B] =
@@ -86,8 +86,8 @@ trait WildcardPaths {
   })
 
   implicit val WildcardPathMonad: Monad[WildcardPath] = new Monad[WildcardPath] {
-    def bind[A, B](a: WildcardPath[A])(f: A => WildcardPath[B]) = a flatMap f
-    def point[A](a: => A) = wildcardpath(_ => found((Path.base, a)))
+    override def bind[A, B](a: WildcardPath[A])(f: A => WildcardPath[B]) = a flatMap f
+    override def point[A](a: => A) = wildcardpath(_ => found((Path.base, a)))
     override def map[A, B](a: WildcardPath[A])(f: A => B) = a map f
   }
 }

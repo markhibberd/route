@@ -1,7 +1,5 @@
 package io.mth.route
 
-import scalaz._, Scalaz._
-
 sealed trait Part {
   val fragment: String
 
@@ -32,5 +30,5 @@ trait Parts {
     val fragment = f
   }
 
-  implicit def StringToPart(s: String) = part(s)
+  implicit def StringToPart(s: String): Part = part(s)
 }
