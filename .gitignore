@@ -6,3 +6,5 @@
 /.lib
 *~
 *#
+*.iws
+/target
