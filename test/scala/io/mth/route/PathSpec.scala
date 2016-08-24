@@ -7,7 +7,7 @@ import Data._
 import RouteMatchers._
 
 class PathSpec extends Specification with ScalaCheck { 
-  "request path should always match" in check { (r: Request, atom: String) => 
+  "request path should always match" in prop { (r: Request, atom: String) =>
     r.path(atom)(r) must matchResponse(atom)
   }
 }

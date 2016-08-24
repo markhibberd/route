@@ -26,8 +26,8 @@ object build extends Build {
   , settings = Defaults.defaultSettings ++ Seq[Sett](
       name := "route"
     , organization := "io.mth"
-    , version := "1.3-SNAPSHOT"
-    , scalaVersion := "2.11.5"
+    , version := "1.4"
+    , scalaVersion := "2.11.8"
     , crossScalaVersions := Seq("2.10.4", scalaVersion.value)
     , scalacOptions := Seq(
         "-deprecation"
@@ -44,10 +44,10 @@ object build extends Build {
     , testOptions in Test += Tests.Setup(() => System.setProperty("specs2.outDir", "gen/sbt/target/specs2-reports"))
     , publishSetting
     , libraryDependencies ++= Seq(
-        ("org.scalaz" %% "scalaz-core" % "7.1.0")
-      , ("org.specs2" %% "specs2-core" % "2.4.16" % "test")
-      , ("org.specs2" %% "specs2-scalacheck" % "2.4.16" % "test")
-      , ("org.scalacheck" %% "scalacheck" % "1.12.2" % "test")
+        ("org.scalaz" %% "scalaz-core" % "7.2.5")
+      , ("org.specs2" %% "specs2-core" % "3.8.4" % "test")
+      , ("org.specs2" %% "specs2-scalacheck" % "3.8.4" % "test")
+      , ("org.scalacheck" %% "scalacheck" % "1.13.2" % "test")
       )
     )
   )

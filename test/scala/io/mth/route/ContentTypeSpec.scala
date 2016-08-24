@@ -7,7 +7,7 @@ import Data._
 import RouteMatchers._
 
 class ContentTypeSpec extends Specification with ScalaCheck { 
-  "request content type should always match" in check { (r: Request, atom: String) => 
+  "request content type should always match" in prop { (r: Request, atom: String) =>
     r.contentType(atom)(r) must matchResponse(atom)
   }
 }

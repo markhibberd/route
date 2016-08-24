@@ -7,7 +7,7 @@ import Data._
 import RouteMatchers._
 
 class MethodSpec extends Specification with ScalaCheck { 
-  "request method should always match" in check { (r: Request, atom: String) => 
+  "request method should always match" in prop { (r: Request, atom: String) =>
     r.method(atom)(r) must matchResponse(atom)
   }
 }
