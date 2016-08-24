@@ -31,6 +31,9 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
   <component name="IdProvider" IDEtalkID="D9049435E1EE3DCC74AA3F96F069D06F" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -184,6 +187,7 @@
   </component>
   <component name="ScalaCompilerConfiguration">
     <profile name="SBT 1" modules="route">
+      <option name="implicitConversions" value="true" />
       <option name="deprecationWarnings" value="true" />
       <option name="uncheckedWarnings" value="true" />
       <option name="featureWarnings" value="true" />
@@ -196,6 +200,12 @@
     <option name="linkedExternalProjectsSettings">
       <SbtProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/project" />
+          </set>
+        </option>
         <option name="sbtVersion" value="0.13.12" />
         <option name="useAutoImport" value="true" />
         <option name="useOurOwnAutoImport" value="true" />
