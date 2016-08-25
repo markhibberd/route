@@ -8,3 +8,6 @@
 *#
 *.iws
 /target
+*.iml
+*.ipr
+/.idea
